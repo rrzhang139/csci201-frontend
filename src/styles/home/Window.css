@@ -1,0 +1,69 @@
+
+.progress-container {
+  width: "50%";
+  height: "30%";
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 20px 0;
+  font-family: "Times";
+  align-items: "center";
+  justify-content: center;
+}
+
+.current-listings-container{
+  justify-content: "center";
+  width: 900px;
+}
+
+.title {
+  padding: 30px;
+}
+
+/* Style images */
+.container img {
+  float: left;
+  max-width: 60px;
+  width: 100%;
+  margin-right: 20px;
+  border-radius: 50%;
+}
+.message {
+  position: absolute;
+  top: 80%;
+  left: 60%;
+}
+.split1 {
+  position: absolute;
+  right: 70%;
+}
+.split2 {
+  position: absolute;
+  left: 70%;
+}
+.input {
+    height: 30px;
+    width: 300px;
+}
+.send{
+    height:35px;
+    background-color:rgb(247, 222, 226);
+    width: 80px;
+    border-radius: 5px;
+}
+.container img.right {
+  float: right;
+  margin-left: 20px;
+  margin-right: 0;
+}
+
+.time-right {
+  float: right;
+  color: #aaa;
+}
+
+.time-left {
+  float: left;
+  color: #999;
+}

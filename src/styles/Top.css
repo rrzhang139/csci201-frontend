@@ -1,0 +1,26 @@
+.header {
+  height: 18vh;
+  width: 100%;
+  background-color:rgb(247, 222, 226);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: solid 2px rgb(206, 206, 206);
+  position: relative;
+}
+.chatTitle {
+  font-size: 40px;
+  font-family: "Times New Roman";
+  font-style: oblique;
+}
+
+.homeButton {
+  position: absolute;
+  left: 3%;
+  background-color: transparent;
+  border: none;
+}
+
+.homeButton:focus {
+  outline: none;
+}
