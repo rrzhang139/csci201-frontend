@@ -2,7 +2,7 @@ export async function loginUser(credentials) {
     return fetch(`http://localhost:8080/LoginPage/LoginServlet?username=${credentials.username}&password=${credentials.password}`, {
         method: 'GET'
     })
-        .then(data => data.json())
+        .then(data => data.text())
 }
 
 export async function registerUser(credentials) {
