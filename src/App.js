@@ -3,6 +3,7 @@ import { useEffect, useState, useContext } from 'react';
 import Home from './pages/Home';
 import Chat from './pages/Chat';
 import Listing from './pages/Listing';
+// import ListingDetails from './pages/ListingDetails';
 import Login from './pages/Login';
 import Header from './components/Header';
 import UserContext from './UserContext'
@@ -11,13 +12,12 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link
+    Link,
+    useHistory
 } from "react-router-dom";
 
 export default function App() {
     const [token, setToken] = useState("");
-
-
 
     useEffect(async () => {
         const loggedInUser = localStorage.getItem('token');
@@ -33,24 +33,29 @@ export default function App() {
         <UserContext.Provider value={{ token, setToken }}>
             <Router>
                 < Switch >
-                    <Route exact path="/">
-                        <Header />
-                        <Listing />
-                    </Route>
-                    {/* <Route path="/listings" component={Listing} /> */}
-                    <Route exact path="/listings">
-                        <Header />
-                        <Listing />
-                    </Route>
-                    {/* <Route path="/chat">
+                    <div stlye={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                        <Route exact path="/">
+                            <Header />
+                            <Home />
+                        </Route>
+                        {/* <Route path="/listingdetails/:listing" component={ListingDetails}></Route> */}
+                        {/* <Route path="/listings" component={Listing} /> */}
+                        <Route exact path="/listings">
+                            <Header />
+                            <Listing />
+                        </Route>
+                        {/* <Route path="/chat">
                     <Header title={'Chat'} />
                     <Chat />
                 </Route> */}
-                    <Route exact path="/login">
-                        <Header />
-                        <Login />
-                    </Route>
-
+                        <Route exact path="/login">
+                            <Header />
+                            <Login />
+                        </Route>
+                        <Route exact path="/logout">
+                            <Logout />
+                        </Route>
+                    </div>
                 </Switch >
             </Router>
         </UserContext.Provider>
@@ -58,5 +63,16 @@ export default function App() {
     );
 }
 
+function Logout() {
+    const { token, setToken } = useContext(UserContext)
+    const history = useHistory()
 
+    useEffect(async () => {
+        setToken("");
+        localStorage.clear();
+        history.push("/login")
+    }, [])
+
+    return null
+}
 

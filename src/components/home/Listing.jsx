@@ -8,7 +8,7 @@ function Listing(props) {
     return (
         <div class="item">
             <div class="picture">
-                <h1>insert picture here</h1>
+                <img src={props.image}></img>
             </div>
 
             <div class="description">

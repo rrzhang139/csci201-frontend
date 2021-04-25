@@ -4,98 +4,73 @@ import UserContext from "../UserContext";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { registerUser, loginUser } from '../Requests'
+import '../styles/Login.css'
+import Register from '../components/Register'
 
+export default function Login() {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const history = useHistory();
+    const { token, setToken } = useContext(UserContext)
 
-export default function Register() {
-    const { setToken } = useContext(UserContext)
-    const [email, setEmail] = useState("")
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
-    const [confirmPassword, setConfirmPassword] = useState("")
-    const [agreeToTos, setAgreeToTos] = useState(false)
-    const history = useHistory()
-
-
-
-    const handleSubmitRegister = async (e) => {
-        e.preventDefault()
-        if (username.length < 6 || password.length < 6) {
-            alert("Username or Password is too short")
-        } else if (password !== confirmPassword) {
-            alert("Passwords dont match")
-        } else if (!agreeToTos) {
-            alert("Please agree to the Terms of Service")
+    const handleSubmit = async e => {
+        e.preventDefault();
+        const user = await loginUser({
+            username,
+            password
+        });
+        console.log(user)
+        if (user) {
+            console.log("set token in login: ", user.token)
+            setToken(user.token)
+            localStorage.setItem('token', user.token);
+            history.push("/")
         } else {
-            const token = await registerUser({
-                username,
-                password,
-                email
-            });
-            if (token) {
-                console.log("set token: ", token)
-                await setToken(token);
-                localStorage.setItem('token', token);
-                history.push("/")
-            } else {
-                alert("Either username or email is taken")
-            }
+            alert("Invalid credentials")
         }
-
     }
 
 
 
     return (
-        <>
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: "center", height: '500px', marginTop: "10%" }}>
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: "space-evenly", height: "100%" }}>
+                <div className="Login">
+                    <h1>Please Login</h1>
 
-            <Form onSubmit={handleSubmitRegister}>
-                <h1>Please Register</h1>
-                <Form.Group size="lg" controlId="username">
-                    <Form.Label>Username</Form.Label>
-                    <Form.Control
-                        autoFocus
-                        type="username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                </Form.Group>
-                <Form.Group size="lg" controlId="email">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </Form.Group>
-                <Form.Group size="lg" controlId="password">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </Form.Group>
-                <Form.Group size="lg" controlId="confirmPassword">
-                    <Form.Label>Confirm Password</Form.Label>
-                    <Form.Control
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                    />
-                </Form.Group>
-                <Form.Group size="lg" controlId="agreeToTos">
-                    <Form.Label>Terms and Conditions</Form.Label>
-                    <Form.Check
-                        type="checkbox"
-                        value={agreeToTos}
-                        onChange={(e) => setAgreeToTos(e.target.value)}
-                    />
-                </Form.Group>
-                <Button block size="lg" type="submit" >
-                    Register
-                    </Button>
-            </Form>
+                    <Form onSubmit={handleSubmit} >
+                        <div class="Login">
+                            <Form.Group size="lg" controlId="user" >
+                                <Form.Label>Username</Form.Label>
+                                <br />
+                                <Form.Control
+                                    autoFocus
+                                    type="username"
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
+                                />
+                            </Form.Group>
+                            <Form.Group size="lg" controlId="password" style={{ marginTop: "20px" }}>
+                                <Form.Label>Password</Form.Label>
+                                <br />
+                                <Form.Control
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                            </Form.Group>
+                            <br />
+                            <Button block size="lg" type="submit" >
+                                Login
+                                </Button>
+                        </div>
+                    </Form>
 
-        </>
+
+                </div>
+                <Register />
+            </div>
+        </div>
+
     );
 }
