@@ -5,54 +5,50 @@ import * as Yup from 'yup';
 import { postListing } from '../../Requests'
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { useHistory, Redirect } from "react-router-dom"
+import PhoneInput from 'react-phone-number-input'
+import 'react-phone-number-input/style.css'
 
-export default function Listings({ setToken }) {
-
+export default function Listings({ setToken, token }) {
+    const history = useHistory();
     const [lname, setLname] = useState("")
     const [address, setAddress] = useState("")
     const [sqft, setSqft] = useState("")
     const [price, setPrice] = useState("")
     const [desc, setDesc] = useState("")
-
-    // const initialValues = {
-    //     lname: '',
-    //     address: '',
-    //     sqft: '',
-    //     price: '',
-    //     desc: ''
-    // };
+    const [moveIn, setMoveIn] = useState("")
+    const [moveOut, setMoveOut] = useState("")
+    const [contact, setContact] = useState("")
 
 
+    const handleSubmit = async (e) => {
+        const token = localStorage.getItem('token')
+        if (sqft <= 0) {
+            e.preventDefault();
+            alert("Sqft cannot be less than or equal to 0")
+        } else if (price <= 0) {
+            e.preventDefault();
+            alert("Price cannot be less than or equal to 0")
+        } else {
+            const resp = await postListing({
+                lname,
+                address,
+                sqft,
+                price,
+                desc,
+                token,
+                moveIn,
+                moveOut,
+                contact
+            });
+            if (!resp) {
+                e.preventDefault();
+                alert("Address or Listing Name already exists")
+            }
+            history.push('/')
+        }
 
-    const handleSubmit = async () => {
-        // e.preventDefault();
-
-        const token = await postListing({
-            lname,
-            address,
-            sqft,
-            price,
-            desc
-        });
-        setToken(token);
     }
-
-
-    // const validationSchema = Yup.object().shape({
-    //     lname: Yup.string()
-    //         .required('Listing name is required'),
-    //     address: Yup.string()
-    //         .required('Address is required'),
-    //     sqft: Yup
-    //         .number('sqft must be a number')
-    //         .required('sqft is required'),
-    //     price: Yup
-    //         .number('price must be a number')
-    //         .required('price is required'),
-    //     desc: Yup.string()
-    //         .required('desc is required')
-    // });
-
 
 
     return (
@@ -107,6 +103,31 @@ export default function Listings({ setToken }) {
                                 onChange={(e) => setDesc(e.target.value)}
                             />
                         </Form.Group>
+                        <Form.Group size="lg" controlId="date" style={{ marginTop: "20px" }}>
+                            <Form.Label>Move-in Date</Form.Label>
+                            <Form.Check
+                                type="date"
+                                value={moveIn}
+                                onChange={(e) => setMoveIn(e.target.value)}
+                            />
+                        </Form.Group>
+                        <Form.Group size="lg" controlId="date" style={{ marginTop: "20px" }}>
+                            <Form.Label>Move-out Date</Form.Label>
+                            <Form.Check
+                                type="date"
+                                value={moveOut}
+                                onChange={(e) => setMoveOut(e.target.value)}
+                            />
+                        </Form.Group>
+                        <Form.Group size="lg" controlId="contact" style={{ marginTop: "20px" }}>
+                            <Form.Label>Contact Information</Form.Label>
+                            <PhoneInput
+                                country="US"
+                                placeholder="Enter phone number"
+                                value={contact}
+                                onChange={setContact} />
+                        </Form.Group>
+
                         <Button block size="lg" type="submit" style={{ marginTop: "20px" }}>
                             Register
                     </Button>

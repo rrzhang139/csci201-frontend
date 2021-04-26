@@ -25,8 +25,6 @@ export default function Login() {
             setToken(user.token)
             localStorage.setItem('token', user.token);
             history.push("/")
-        } else {
-            alert("Invalid credentials")
         }
     }
 

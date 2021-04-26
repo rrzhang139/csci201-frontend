@@ -32,16 +32,17 @@ export default function App() {
     return (
         <UserContext.Provider value={{ token, setToken }}>
             <Router>
+                <Header />
                 < Switch >
                     <div stlye={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                         <Route exact path="/">
-                            <Header />
+
                             <Home />
                         </Route>
                         {/* <Route path="/listingdetails/:listing" component={ListingDetails}></Route> */}
                         {/* <Route path="/listings" component={Listing} /> */}
                         <Route exact path="/listings">
-                            <Header />
+
                             <Listing />
                         </Route>
                         {/* <Route path="/chat">
@@ -49,7 +50,7 @@ export default function App() {
                     <Chat />
                 </Route> */}
                         <Route exact path="/login">
-                            <Header />
+
                             <Login />
                         </Route>
                         <Route exact path="/logout">
